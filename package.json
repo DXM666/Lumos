@@ -1,0 +1,50 @@
+{
+  "name": "lumos",
+  "version": "0.1.0",
+  "description": "一个高性能的前端打包工具，参考Vite实现",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "lumos": "bin/lumos.js"
+  },
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "serve": "npx lumos example",
+    "test": "vitest run",
+    "lint": "eslint src --ext .ts"
+  },
+  "keywords": [
+    "bundler",
+    "vite",
+    "hmr",
+    "dev-server",
+    "build-tool"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/koa": "^2.15.0",
+    "@types/koa-static": "^4.0.4",
+    "@types/node": "^20.10.0",
+    "@types/ws": "^8.5.10",
+    "@typescript-eslint/eslint-plugin": "^6.13.1",
+    "@typescript-eslint/parser": "^6.13.1",
+    "eslint": "^8.54.0",
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.2",
+    "vitest": "^0.34.6"
+  },
+  "dependencies": {
+    "cac": "^6.7.14",
+    "chokidar": "^3.5.3",
+    "es-module-lexer": "^1.4.1",
+    "esbuild": "^0.19.8",
+    "koa": "^2.14.2",
+    "koa-static": "^5.0.0",
+    "magic-string": "^0.30.5",
+    "picocolors": "^1.0.0",
+    "rollup": "^4.6.0",
+    "ws": "^8.14.2"
+  }
+}

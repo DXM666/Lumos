@@ -1,0 +1,129 @@
+/* 基础样式 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #f5f5f5;
+}
+
+#app {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  min-height: 100vh;
+}
+
+/* 页头样式 */
+.header {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  color: #0066cc;
+  margin-bottom: 10px;
+}
+
+.header nav ul {
+  display: flex;
+  list-style: none;
+}
+
+.header nav ul li {
+  margin-right: 20px;
+}
+
+.header nav ul li a {
+  color: #0066cc;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.header nav ul li a:hover {
+  text-decoration: underline;
+}
+
+/* 内容样式 */
+.content {
+  margin-bottom: 30px;
+}
+
+.description {
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+}
+
+.counter {
+  padding: 20px;
+  background-color: #f0f8ff;
+  border-radius: 5px;
+}
+
+.counter h2 {
+  margin-bottom: 15px;
+  color: #0066cc;
+}
+
+.counter-display {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.counter-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.counter-controls button {
+  padding: 8px 15px;
+  font-size: 1rem;
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.counter-controls button:hover {
+  background-color: #0055aa;
+}
+
+.counter-controls button#reset {
+  background-color: #cc0000;
+}
+
+.counter-controls button#reset:hover {
+  background-color: #aa0000;
+}
+
+/* 页脚样式 */
+.footer {
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+  text-align: center;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.footer p {
+  margin-bottom: 5px;
+}
