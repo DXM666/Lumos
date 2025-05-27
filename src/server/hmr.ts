@@ -64,6 +64,23 @@ export function createHmrEngine(wss: WebSocketServer, moduleGraph: ModuleGraph) 
       
       const timestamp = Date.now();
       
+      // 将文件系统路径转换为浏览器可识别的 URL 路径
+      const fileToUrl = (filePath: string): string => {
+        // 获取相对于项目根目录的路径
+        const relativePath = path.relative(process.cwd(), filePath);
+        // 将反斜杠转换为正斜杠（对于 Windows 路径）
+        const normalizedPath = relativePath.split(path.sep).join('/');
+        
+        // 处理 example 目录下的文件
+        if (normalizedPath.startsWith('example/')) {
+          // 移除 'example/' 前缀，因为浏览器中是从项目根目录访问的
+          return '/' + normalizedPath.replace(/^example\/?/, '');
+        }
+        
+        // 其他路径保持不变
+        return '/' + normalizedPath;
+      };
+      
       for (const mod of modules) {
         // 使模块无效
         moduleGraph.invalidateModule(mod);
@@ -76,17 +93,20 @@ export function createHmrEngine(wss: WebSocketServer, moduleGraph: ModuleGraph) 
           type = 'full-reload';
         }
         
+        // 将文件路径转换为 URL 路径
+        const browserPath = fileToUrl(file);
+        
         // 发送更新
         this.send({
           type,
-          path: mod.id,
+          path: browserPath,  // 使用浏览器可识别的路径
           timestamp,
-          acceptedPath: mod.id,
+          acceptedPath: browserPath,  // 同样使用浏览器路径
         });
         
         console.log(
           pc.green(`[hmr] `) + 
-          `已发送更新: ${path.relative(process.cwd(), file)}`
+          `已发送更新: ${path.relative(process.cwd(), file)} -> ${browserPath}`
         );
       }
     },

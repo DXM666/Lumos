@@ -158,9 +158,10 @@ export function createModuleGraph(): ModuleGraph {
     /**
      * 使模块失效
      */
-    invalidateModule(module: ModuleNode): void {
-      // 清除转换结果
-      module.transformResult = null;
+    invalidateModule(mod: ModuleNode): void {
+      mod.transformResult = null;
+      // 更新模块的最后 HMR 时间戳
+      mod.lastHMRTimestamp = Date.now();
     },
     
     /**

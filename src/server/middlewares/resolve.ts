@@ -1,8 +1,13 @@
 import type { Middleware } from 'koa';
+import type { ResolvedConfig, ModuleGraph } from '../../types';
 import path from 'path';
 import fs from 'fs';
 import { parse } from 'url';
-import type { ResolvedConfig, ModuleGraph } from '../../types';
+import { fileURLToPath } from 'url';
+
+// 获取当前文件的目录路径
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 /**
  * 解析中间件
@@ -24,7 +29,19 @@ export function resolveMiddleware(
     if (pathname === '/@lumos/client') {
       // 提供 HMR 客户端脚本
       ctx.type = 'js';
-      ctx.body = fs.readFileSync(path.join(__dirname, '../client/client.js'), 'utf-8');
+      // 使用正确的路径定位 client.js
+      // 先获取当前文件的目录（dist/middlewares）
+      // 然后向上两级到 dist，再进入 client 目录
+      const clientPath = path.join(__dirname, 'client/client.js');
+      console.log(`加载 HMR 客户端脚本: ${clientPath}`);
+      
+      try {
+        ctx.body = fs.readFileSync(clientPath, 'utf-8');
+      } catch (err: any) {
+        console.error(`无法读取 HMR 客户端脚本: ${err.message || err}`);
+        ctx.status = 500;
+        ctx.body = `HMR 客户端脚本加载失败: ${err.message || err}`;
+      }
       return;
     }
     

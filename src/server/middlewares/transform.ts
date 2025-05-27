@@ -24,10 +24,15 @@ export function transformMiddleware(
     // 获取模块 ID
     const moduleId =
       "/" + path.relative(config.root, filePath).replace(/\\/g, "/");
-
+      
+    // 检查是否有时间戳参数（用于缓存破坏）
+    const timestamp = ctx.query.t;
+    
     // 检查模块图中是否有缓存
     const module = moduleGraph.getModuleById(moduleId);
-    if (module?.transformResult) {
+    
+    // 只有当没有时间戳参数或者时间戳与模块的最后更新时间一致时才使用缓存
+    if (module?.transformResult && (!timestamp || parseInt(timestamp as string) <= module.lastHMRTimestamp)) {
       ctx.type = "js";
       ctx.body = module.transformResult.code;
       return;
@@ -54,7 +59,7 @@ export function transformMiddleware(
       }
 
       code = fs.readFileSync(filePath, "utf-8");
-    } catch (e) {
+    } catch (e: any) {
       console.error(`读取文件失败: ${filePath}`, e);
       ctx.status = 404;
       ctx.body = `无法读取文件: ${filePath}, 错误: ${e.message}`;
@@ -110,6 +115,13 @@ export function transformMiddleware(
       //   map: null,
       //   deps: [],
       // });
+      
+      // 如果是 HTML 文件，注入 HMR 客户端脚本
+      if (type === "html") {
+        const hmrClientScript = `<script type="module" src="/@lumos/client"></script>`;
+        code = code.replace("</head>", `${hmrClientScript}</head>`);
+      }
+      
       ctx.type = type === "js" ? "application/javascript" : type;
       ctx.body = code;
       return;
